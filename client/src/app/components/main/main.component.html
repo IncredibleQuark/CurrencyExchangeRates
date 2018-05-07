@@ -8,17 +8,19 @@
     <div class="container-exchange flex">
       <div class="selectors">
         <div class="base-select">
-          <label for="baseSelect" class="label">Base:</label>
-          <select name="baseSelect" id="baseSelect">
-            <option>1</option>
+          <label for="base_select" class="label">Base:</label>
+          <select [(ngModel)]="selectedCurrency" name="baseSelect" id="base_select">
+            <option *ngFor="let currency of currencies" [ngValue]="currency">{{currency}}</option>
           </select>
         </div>
 
-        <div class="currency-select">
-          <label for="currencySelect" class="label">Currency:</label>
-          <select name="currencySelect" id="currencySelect">
-            <option value="EUR">EUR</option>
-          </select>
+        <div class="date-select">
+          <label for="date_select" class="label">Date:</label>
+          <input class="date-picker" type="date" name="dateSelect" id="date_select"/>
+        </div>
+
+        <div class="btn">
+          <button type="submit">Display</button>
         </div>
       </div>
 

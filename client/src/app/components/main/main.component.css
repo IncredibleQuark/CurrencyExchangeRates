@@ -26,14 +26,12 @@
   justify-content: space-between;
 }
 
-.currency-select {
+.date-select {
   flex-direction: row;
   justify-content: space-between;
 }
 
-.label {
-  width: 40px;
-}
+
 
 table, th, td {
   border: 1px solid black;
@@ -43,10 +41,14 @@ th, td {
   padding: 15px;
 }
 select {
-  width: 120px;
+  width: 160px;
   background-color: rgba(255,255,255,.5);
   padding: 5px;
 }
-.title {
 
+.date-picker {
+  width: 148px;
+  background-color: rgba(255,255,255,.5);
+  padding: 5px;
 }
+

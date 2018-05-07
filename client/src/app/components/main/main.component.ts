@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  private selectedCurrency: string;
+  currencies: Array<string>;
+
+  constructor() {
+    this.currencies = ['EUR', 'USD', 'GBP', 'AUD', 'CAD', 'JPY']; //TODO import from external service if necessary
+  }
 
   ngOnInit() {
+
   }
 
 }
