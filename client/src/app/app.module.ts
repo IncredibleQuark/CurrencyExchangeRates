@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import {FormsModule} from "@angular/forms";
+import {ExchangeService} from "./services/exchange/exchange.service";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -14,9 +16,10 @@ import {FormsModule} from "@angular/forms";
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ExchangeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
