@@ -9,49 +9,67 @@ import {Rates} from "../../interfaces/rates.interface";
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
+
 export class MainComponent implements OnInit {
 
-  private desiredCurrencies: Array<string>;
   private baseCurrency: string;
-  public date;
-  private pipe;
+  public date: string;
+  private pipe: DatePipe;
+  private minDate: Date;
+  private maxDate: Date;
+  private failed: boolean;
+  private sortingAsc: boolean;
+  availableCurrencies: Array<string>;
   currencies: Array<Currency>;
 
   constructor(private exchangeService: ExchangeService) {
 
-    this.desiredCurrencies = ['EUR', 'USD', 'GBP', 'AUD', 'CAD', 'JPY'];
+    this.availableCurrencies = ['EUR', 'USD', 'GBP', 'AUD', 'CAD', 'JPY'];
     this.baseCurrency = 'EUR';
+    this.minDate = new Date('1999-01-04'); //min value tested on ECB API
+    this.maxDate = new Date();
     this.pipe = new DatePipe('en-US');
     this.date = this.pipe.transform(new Date(), 'yyyy-MM-dd');
 
   }
 
+
   ngOnInit() {
+    this.failed = false;
+    this.sortingAsc = true;
     this.getExchangeRates();
   }
 
 
   getExchangeRates() {
-    console.log(this.baseCurrency);
+
     this.currencies = [];
     this.exchangeService.getExchangeRates(this.baseCurrency, this.date).subscribe((data: Rates) => {
 
-      this.handleResponse(data)
+      this.handleResponse(data);
+
+    }, (err) => {
+      console.warn(err);
+      this.failed = true;
     });
   }
 
+
   handleResponse(data) {
 
-    const filtered = Object.keys(data.rates)
-      .filter(key => this.desiredCurrencies.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = data.rates[key];
-        return obj;
-      }, {});
+    const filtered = data.rates;
+
+    // DISABLED filter only to availableCurrencies
+      // Object.keys(data.rates)
+      // .filter(key => this.availableCurrencies.includes(key))
+      // .reduce((obj, key) => {
+      //   obj[key] = data.rates[key];
+      //   return obj;
+      // }, {});
 
     for (const currency in filtered) {
-      let buyPrice = this.calculateBuy(filtered[currency]);
-      let sellPrice = this.calculateSell(filtered[currency]);
+      let buyPrice = MainComponent.calculateBuy(filtered[currency]);
+      let sellPrice = MainComponent.calculateSell(filtered[currency]);
       this.currencies.push(
         {
           name: currency,
@@ -62,14 +80,50 @@ export class MainComponent implements OnInit {
       );
     }
 
-    console.warn(this.currencies);
   }
 
-  calculateBuy(mid) {
+
+  sort() {
+    this.sortingAsc = !this.sortingAsc;
+
+    if (this.sortingAsc) {
+      this.currencies.sort(MainComponent.sortAsc);
+    } else {
+      this.currencies.sort(MainComponent.sortDesc);
+    }
+
+  }
+
+
+  isAvailable(curr) {
+    return this.availableCurrencies.indexOf(curr) !== -1
+  }
+
+
+  private static sortDesc(a,b) {
+    if (a.name > b.name)
+      return -1;
+    if (a.name < b.name)
+      return 1;
+    return 0;
+  }
+
+
+  private static sortAsc(a,b) {
+    if (a.name < b.name)
+      return -1;
+    if (a.name > b.name)
+      return 1;
+    return 0;
+  }
+
+
+  private static calculateBuy(mid) {
     return  mid - (mid * 0.05);
   }
 
-  calculateSell(mid) {
+
+  private static calculateSell(mid) {
     return mid + (mid * 0.05);
   }
 

@@ -10,8 +10,34 @@
   justify-content: center;
 }
 
+.highlight-row {
+  background-color: red;
+}
+
 .flex {
   display: flex;
+}
+.arrows {
+  display: inline;
+  float: right;
+  cursor: pointer;
+}
+
+.arr-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  margin-bottom: 5px;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
 }
 
 .container-exchange {
@@ -19,6 +45,23 @@
   justify-content: space-around;
   flex-direction: row;
   align-content: space-between;
+  flex-wrap: wrap;
+}
+
+.row {
+  padding: 15px;
+}
+
+.btn {
+  padding-left: 40px;
+}
+
+.btn-custom {
+  background-color: white;
+  width: 100%;
+  border: 1px solid black;
+  cursor: pointer;
+  box-shadow: 2px 2px;
 }
 
 .base-select {
@@ -31,14 +74,23 @@
   justify-content: space-between;
 }
 
+.table {
+  max-height: 50vh;
+  overflow-y: scroll;
+}
 
+.curr-row {
+  cursor: pointer;
+  width: 50%;
+  text-align: left;
+}
 
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
 th, td {
-  padding: 15px;
+  padding: 10px;
 }
 select {
   width: 160px;
@@ -50,5 +102,23 @@ select {
   width: 148px;
   background-color: rgba(255,255,255,.5);
   padding: 5px;
+}
+
+.loader-wrap {
+  height: 50vh;
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 

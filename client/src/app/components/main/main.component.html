@@ -1,4 +1,5 @@
 <div class="container">
+
   <div class="container-flex flex">
 
     <div class="title">
@@ -6,41 +7,74 @@
     </div>
 
     <div class="container-exchange flex">
+
       <div class="selectors">
-        <div class="base-select">
-          <label for="base_select" class="label">Base:</label>
-          <select [(ngModel)]="baseCurrency" name="baseSelect" id="base_select">
-            <option *ngFor="let currency of desiredCurrencies" [ngValue]="currency">{{currency}}</option>
-          </select>
+
+        <div class="row">
+
+          <div class="base-select">
+            <label for="base_select" class="label-block">Base: </label>
+            <select [(ngModel)]="baseCurrency" name="baseSelect" id="base_select">
+              <option *ngFor="let currency of availableCurrencies" [ngValue]="currency">{{currency}}</option>
+            </select>
+          </div>
+
         </div>
 
-        <div class="date-select">
-          <label for="date_select" class="label">Date:</label>
-          <input class="date-picker" type="date" name="dateSelect" [ngModel]="date  | date:'yyyy-MM-dd'" (ngModelChange)="date = $event" id="date_select"/>
+        <div class="row">
+
+          <div class="date-select">
+            <label for="date_select" class="label-block">Date: </label>
+            <input class="date-picker" type="date" min="{{minDate | date: 'yyyy-MM-dd'}}"
+                   max="{{maxDate | date: 'yyyy-MM-dd'}}" name="dateSelect" [ngModel]="date  | date:'yyyy-MM-dd'"
+                   (ngModelChange)="date = $event" id="date_select"/>
+          </div>
         </div>
 
-        <div class="btn">
-          <button type="submit" (click)="getExchangeRates()">Display</button>
+        <div class="row">
+          <div class="btn">
+            <button type="submit" class="btn-custom" (click)="getExchangeRates()">Display</button>
+          </div>
         </div>
+
       </div>
 
 
-      <div class="table">
+      <div class="table" *ngIf="currencies">
         <table>
           <thead>
           <tr>
-            <td>Curr</td>
-            <td>buy</td>
-            <td>sell</td>
+            <th class="curr-row" (click)="sort()">
+              <span style="display: inline">Currency</span>
+              <div class="arrows">
+                <div class="arr-up"></div>
+                <div class="arrow-down"></div>
+              </div>
+            </th>
+            <th>Buy</th>
+            <th>Sell</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>10</td>
-          </tr>
+          <ng-container *ngFor="let curr of currencies">
+            <tr *ngIf="curr.name !== baseCurrency" [ngClass]="{'highlight-row': isAvailable(curr.name)}">
+              <td>{{curr.name}}</td>
+              <td>{{curr.buy | number : '1.4'}}</td>
+              <td>{{curr.sell | number : '1.4'}}</td>
+            </tr>
+          </ng-container>
           </tbody>
         </table>
       </div>
+
+      <div class="loader-wrap">
+        <div class="loader" *ngIf="!currencies"></div>
+      </div>
+
+      <div class="fail" *ngIf="failed">
+        Failed to load data :(
+      </div>
+
     </div>
 
   </div>
