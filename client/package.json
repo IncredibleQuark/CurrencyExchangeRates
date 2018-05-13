@@ -1,6 +1,7 @@
 {
-  "name": "client",
+  "name": "ExchangeRates",
   "version": "0.0.0",
+  "author": "Łukasz Kupiński",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
